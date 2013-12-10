@@ -24,7 +24,7 @@ define( 'FOXWAY_PHP_WARNING_INVALID_ARGUMENT_FOR_FOREACH', 116 ); // PHP Warning
 
 
 /**
- * Error Exception class of Foxway extension.
+ * Error Exception class.
  *
  * @file ExceptionFoxway.php
  * @ingroup Foxway
@@ -45,8 +45,8 @@ class ExceptionFoxway extends \Exception {
 
 	function __toString() {
 		$params = $this->params;
-		$line = $this->tokenLine;
-		$place = $this->place;
+		$line = (int) $this->tokenLine;
+		$place = strtr( $this->place, array('&'=>'&amp;', '<' => '&lt;') );
 
 		switch ( $this->code ) {
 			case FOXWAY_PHP_SYNTAX_ERROR_UNEXPECTED:
@@ -86,8 +86,9 @@ class ExceptionFoxway extends \Exception {
 				$message = "PHP Fatal error:  Undefined error, code {$this->code}";
 				break;
 		}
-		//return "$message in $place on line $line\n";
-		return \Html::element( 'span', array('class'=>'error'), "$message in $place on line $line" ) . '<br />';
+		$message = strtr( $message, array('&'=>'&amp;', '<' => '&lt;') );
+		return "<span style='color: red;'>$message in $place on line $line</span><br />";
+		//return \Html::element( 'span', array('class'=>'error'), "$message in $place on line $line" ) . '<br />';
 	}
 }
 

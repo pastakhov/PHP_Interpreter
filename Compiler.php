@@ -34,8 +34,10 @@ define( 'FOXWAY_CLEAR_FLAG_FOR_SHIFT_BEFORE_PARENTHESES', FOXWAY_EXPECT_PARENTHE
 //define( 'FOXWAY_CLEAR_FLAG_FOR_SHIFT_AFTER_PARENTHESES', FOXWAY_EXPECT_PARENTHESES_WITH_LIST_PARAMS );
 define( 'FOXWAY_CLEAR_FLAG_FOR_VALUE', ~(FOXWAY_EXPECT_START_COMMAND|FOXWAY_EXPECT_ELSE) );
 
+require_once __DIR__ . '/ExceptionFoxway.php';
+
 /**
- * Compiler class of Foxway extension.
+ * Compiler class.
  * This class converts a php code as data for the class Runtime
  *
  * @file Compiler.php

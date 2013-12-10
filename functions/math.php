@@ -4,11 +4,6 @@
  * @see http://www.php.net/manual/en/ref.math.php
  */
 
-// Check to see if we are being called as an extension or directly
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'This file is an extension to MediaWiki and thus not a valid entry point.' );
-}
-
 return array(
 	'abs' => array( 1=>function($args) { return abs($args[0]); } ),
 	'acos' => array( 1=>function($args) { return acos($args[0]); } ),

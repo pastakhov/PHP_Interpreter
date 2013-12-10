@@ -15,8 +15,13 @@ define( 'FOXWAY_STACK_ARRAY_INDEX', 'a' );
 define( 'FOXWAY_DEFAULT_VALUES', 'd' );
 define( 'FOXWAY_MIN_VALUES', '<' );
 
+include_once __DIR__ . '/Settings.php';
+require_once __DIR__ . '/Compiler.php';
+require_once __DIR__ . '/iRawOutput.php';
+require_once __DIR__ . '/outPrint.php';
+
 /**
- * Runtime class of Foxway extension.
+ * Runtime class.
  *
  * @file Runtime.php
  * @ingroup Foxway
@@ -35,27 +40,6 @@ class Runtime {
 	protected static $variables = array();
 	protected static $staticVariables = array();
 	protected static $globalVariables = array();
-
-	/*public function startTime($scope) {
-		self::$startTime[$scope] = microtime(true);
-		if( isset(self::$time[$scope]) ) {
-			return $this->checkExceedsTime();
-		}else{
-			self::$time[$scope] = 0;
-		}
-	}
-
-	public function stopTime($scope) {
-		self::$time[$scope] += microtime(true) - self::$startTime[$scope];
-	}
-
-	public function checkExceedsTime() {
-		global $wgFoxway_max_execution_time_for_scope;
-		if( microtime(true) - self::$startTime[$this->scope] + self::$time[$this->scope] > $wgFoxway_max_execution_time_for_scope ) {
-			return new ErrorMessage( __LINE__, null, E_ERROR, array( 'foxway-php-fatal-error-max-execution-time-scope', $wgFoxway_max_execution_time_for_scope, isset($this->args[0])?$this->args[0]:'n\a' ) );
-		}
-		return null;
-	}*/
 
 	public static function runSource($code, array $args = array(), $scope = '', $transit = array() ) {
 		return self::run( Compiler::compile($code), $args, $scope, $transit );
@@ -417,7 +401,7 @@ class Runtime {
 
 									if ( is_callable($function) ) {
 										try {
-											wfSuppressWarnings();
+											//wfSuppressWarnings();
 											$result = $function( $param, $transit );
 											if ( $result instanceof outPrint ) {
 												$value[FOXWAY_STACK_RESULT] = $result->returnValue;
@@ -425,7 +409,7 @@ class Runtime {
 											} else {
 												$value[FOXWAY_STACK_RESULT] = $result;
 											}
-											wfRestoreWarnings();
+											//wfRestoreWarnings();
 										} catch ( ExceptionFoxway $e ) {
 											$e->tokenLine = $value[FOXWAY_STACK_TOKEN_LINE];
 											$e->place = $place;

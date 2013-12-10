@@ -4,11 +4,6 @@
  * @see http://www.php.net/manual/en/ref.pcre.php
  */
 
-// Check to see if we are being called as an extension or directly
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'This file is an extension to MediaWiki and thus not a valid entry point.' );
-}
-
 /**
  * add pcre constants in Runtime class
  * @see http://www.php.net/manual/en/pcre.constants.php

@@ -4,11 +4,6 @@
  * @see http://www.php.net/manual/en/ref.array.php
  */
 
-// Check to see if we are being called as an extension or directly
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'This file is an extension to MediaWiki and thus not a valid entry point.' );
-}
-
 return array(
 	'array_change_key_case' => array(
 		FOXWAY_DEFAULT_VALUES=>array( 1=>CASE_LOWER ),

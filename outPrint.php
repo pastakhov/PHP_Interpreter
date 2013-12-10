@@ -1,7 +1,7 @@
 <?php
 namespace Foxway;
 /**
- * outPrint class of Foxway extension.
+ * outPrint class.
  *
  * @file outPrint.php
  * @ingroup Foxway
@@ -24,13 +24,7 @@ class outPrint implements iRawOutput {
 	}
 
 	public function __toString() {
-		if( $this->element !== null ){
-			if( $this->raw ) {
-				return \Html::rawElement( $this->element, array(), $this->contents ) . "\n";
-			}else{
-				return \Html::element( $this->element, array(), $this->contents ) . "\n";
-			}
-		}
-		return $this->raw ? "{$this->contents}\n" : strtr( $this->contents, array('&'=>'&amp;', '<'=>'&lt;') ) . "\n";
+		$contents = $this->raw ? $this->contents : strtr( $this->contents, array('&'=>'&amp;', '<'=>'&lt;') );
+		return is_string( $this->element ) ? "<{$this->element}>$contents</{$this->element}>\n" : "$contents\n";
 	}
 }

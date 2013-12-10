@@ -1,29 +1,7 @@
 <?php
 namespace Foxway;
 
-//$ttt = microtime(true);
-//Runtime::$functions = Runtime::$functions +
-//		( include __DIR__ . '/../../../includes/functions/strings.php' ) + // String Functions @see http://php.net/manual/en/ref.strings.php
-//		( include __DIR__ . '/../../../includes/functions/array.php' ) + // Array Functions @see http://www.php.net/manual/en/ref.array.php
-//		( include __DIR__ . '/../../../includes/functions/math.php' ) + // Math Functions @see http://www.php.net/manual/en/ref.math.php
-//		( include __DIR__ . '/../../../includes/functions/var.php' ) + // Variable handling Functions @see http://www.php.net/manual/en/ref.var.php
-//		( include __DIR__ . '/../../../includes/functions/pcre.php' ); // PCRE Functions @see http://www.php.net/manual/en/ref.pcre.php
-
-Runtime::$functions = array_merge(
-		include __DIR__ . '/../../../includes/functions/strings.php', // String Functions @see http://php.net/manual/en/ref.strings.php
-		include __DIR__ . '/../../../includes/functions/array.php', // Array Functions @see http://www.php.net/manual/en/ref.array.php
-		include __DIR__ . '/../../../includes/functions/math.php', // Math Functions @see http://www.php.net/manual/en/ref.math.php
-		include __DIR__ . '/../../../includes/functions/var.php', // Variable handling Functions @see http://www.php.net/manual/en/ref.var.php
-		include __DIR__ . '/../../../includes/functions/pcre.php', // PCRE Functions @see http://www.php.net/manual/en/ref.pcre.php
-		include __DIR__ . '/../../../includes/functions/datetime.php', // Date/Time Functions @see http://www.php.net/manual/en/ref.datetime.php
-		Runtime::$functions
-);
-
-Runtime::$constants = array_merge(
-		include __DIR__ . '/../../../includes/constants.php',
-		Runtime::$constants
-);
-//echo microtime(true) - $ttt, "\n\n"; // 0.004227876663208
+include_once __DIR__ . '/../Runtime.php';
 
 class RuntimeTest extends \PHPUnit_Framework_TestCase {
 

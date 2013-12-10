@@ -4,11 +4,6 @@
  * @see http://php.net/manual/en/ref.strings.php
  */
 
-// Check to see if we are being called as an extension or directly
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'This file is an extension to MediaWiki and thus not a valid entry point.' );
-}
-
 return array(
 	'addcslashes' => array( 2=>function($args) { return addcslashes($args[0], $args[1]); } ),
 	'addslashes' => array( 1=>function($args) { return addslashes($args[0]); } ),

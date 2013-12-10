@@ -4,11 +4,6 @@
  * @see http://www.php.net/manual/en/ref.datetime.php
  */
 
-// Check to see if we are being called as an extension or directly
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'This file is an extension to MediaWiki and thus not a valid entry point.' );
-}
-
 return array(
 	'checkdate' => array( 3=>function($args) { return checkdate($args[0], $args[1], $args[2]); } ),
 	'date_parse_from_format' => array( 2=>function($args) { return date_parse_from_format($args[0], $args[1]); } ),

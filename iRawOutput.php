@@ -1,7 +1,7 @@
 <?php
 namespace Foxway;
 /**
- * iRawOutput class of Foxway extension.
+ * iRawOutput class.
  *
  * @file iRawOutput.php
  * @ingroup Foxway
