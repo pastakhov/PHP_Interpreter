@@ -863,10 +863,12 @@ closeoperator:
 										break; /********** EXIT **********/
 									}
 								} else { // Example: echo 1;
-									$bytecode[] = $stack;
+									$bytecode = array_merge( $bytecode, $stack );
+									//$bytecode[] = $stack;
 									break; /********** EXIT **********/
 								}
 							}
+							$parentFlags |= FOXWAY_EXPECT_START_COMMAND;
 							$stack = array();
 							//$parentLevel = 0; // @todo must be zero?
 							break;
@@ -1089,7 +1091,8 @@ closeoperator:
 								}
 								break; /********** EXIT **********/
 							} else { // Example: if(1) { echo 2; }
-								$bytecode[] = $tmp;
+								$bytecode = array_merge( $bytecode, $tmp );
+								//$bytecode[] = $tmp;
 								break; /********** EXIT **********/
 							}
 						}
@@ -1124,7 +1127,8 @@ closeoperator:
 
 					$text = self::getNextToken( $tokens, $index, $countTokens, $tokenLine, array(T_VARIABLE) ); // Get variable name;
 					$tmp = array( FOXWAY_STACK_COMMAND=>$id, FOXWAY_STACK_PARAM_2=>substr($text, 1), FOXWAY_STACK_PARAM=>null, FOXWAY_STACK_DO_FALSE=>false, FOXWAY_STACK_TOKEN_LINE=>$tokenLine );
-					$bytecode[][] = &$tmp;
+					$bytecode[] = &$tmp;
+					//$bytecode[][] = &$tmp;
 					if( '=' == self::getNextToken( $tokens, $index, $countTokens, $tokenLine, array(';', '=') ) ) { // Example: static $foo=
 						$needParams = array( &$tmp );
 						$parentheses[] = $parentFlags;
@@ -1140,7 +1144,8 @@ closeoperator:
 						$text = self::getNextToken( $tokens, $index, $countTokens, $tokenLine, array(T_VARIABLE) ); // Get variable name;
 						$tmp[FOXWAY_STACK_PARAM][] = substr($text, 1);
 					}while( ',' == self::getNextToken( $tokens, $index, $countTokens, $tokenLine, array(',', ';') ) );
-					$bytecode[][] = $tmp;
+					$bytecode[] = $tmp;
+					//$bytecode[][] = $tmp;
 					break;
 				case T_LIST:
 					if ( $rightOperators ) { throw new ExceptionFoxway( $id, FOXWAY_PHP_SYNTAX_ERROR_UNEXPECTED, $tokenLine ); }
@@ -1223,8 +1228,11 @@ closeoperator:
 
 		}
 
-		return call_user_func_array( 'array_merge', $bytecode );
-		throw new ExceptionFoxway('$end', FOXWAY_PHP_SYNTAX_ERROR_UNEXPECTED, $tokenLine);
+		if ( !($parentFlags & FOXWAY_EXPECT_START_COMMAND) ) {
+			throw new ExceptionFoxway('$end', FOXWAY_PHP_SYNTAX_ERROR_UNEXPECTED, $tokenLine);
+		}
+		return $bytecode;
+		//return call_user_func_array( 'array_merge', $bytecode );
 		//return $stackOperation; //array_merge(array_reverse($defStak), $stackValues);
 	}
 
