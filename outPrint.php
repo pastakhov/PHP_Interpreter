@@ -1,10 +1,10 @@
 <?php
-namespace Foxway;
+namespace PhpTags;
 /**
  * outPrint class.
  *
  * @file outPrint.php
- * @ingroup Foxway
+ * @ingroup PhpTags
  * @author Pavel Astakhov <pastakhov@yandex.ru>
  * @licence GNU General Public Licence 2.0 or later
  */

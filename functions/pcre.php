@@ -8,7 +8,7 @@
  * add pcre constants in Runtime class
  * @see http://www.php.net/manual/en/pcre.constants.php
  */
-Foxway\Runtime::$constants += array(
+PhpTags\Runtime::$constants += array(
 	'PREG_PATTERN_ORDER' => PREG_PATTERN_ORDER,
 	'PREG_SET_ORDER' => PREG_SET_ORDER,
 	'PREG_OFFSET_CAPTURE' => PREG_OFFSET_CAPTURE,
@@ -35,7 +35,7 @@ $foxway_check_preg_replace_pattern = function ( $arg ) {
 
 		$delimPos = strpos( $regexStarts, $pattern[0] );
 		if ( $delimPos === false ) {
-			throw new Foxway\ExceptionFoxway( array(), FOXWAY_PHP_WARNING_WRONG_DELIMITER );
+			throw new PhpTags\ExceptionPhpTags( PHPTAGS_EXCEPTION_WARNING_WRONG_DELIMITER );
 		}
 
 		$end = $regexEnds[$delimPos];
@@ -44,7 +44,7 @@ $foxway_check_preg_replace_pattern = function ( $arg ) {
 		while ( !isset( $endPos ) ) {
 			$pos = strpos( $pattern, $end, $pos );
 			if ( $pos === false ) {
-				throw new Foxway\ExceptionFoxway( array($end), FOXWAY_PHP_WARNING_NO_ENDING_DELIMITER );
+				throw new PhpTags\ExceptionPhpTags( PHPTAGS_EXCEPTION_WARNING_NO_ENDING_DELIMITER, array($end) );
 			}
 			$backslashes = 0;
 			for ( $l = $pos - 1; $l >= 0; $l-- ) {
@@ -59,7 +59,7 @@ $foxway_check_preg_replace_pattern = function ( $arg ) {
 		$len = strlen( $endRegex );
 		for ( $c = 0; $c < $len; $c++ ) {
 			if ( strpos( $regexModifiers, $endRegex[$c] ) === false ) {
-				throw new Foxway\ExceptionFoxway( array($endRegex[$c]), FOXWAY_PHP_WARNING_UNKNOWN_MODIFIER );
+				throw new PhpTags\ExceptionPhpTags( PHPTAGS_EXCEPTION_WARNING_UNKNOWN_MODIFIER, array($endRegex[$c]) );
 			}
 		}
 		return $startRegex . $endRegex . 'u';
@@ -83,7 +83,7 @@ return array(
 		5=>function($args) { return preg_filter($args[0], $args[1], $args[2], $args[3], $args[4]); },
 	),
 	'preg_grep' => array(
-		FOXWAY_DEFAULT_VALUES=>array( 2=>0 ),
+		PHPTAGS_DEFAULT_VALUES=>array( 2=>0 ),
 		3=>function($args) { return preg_grep($args[0], $args[1], $args[2]); },
 	),
 	'preg_last_error' => array( 0=>function() { return preg_last_error(); } ),
@@ -105,12 +105,12 @@ return array(
 	),
 // @todo mixed preg_replace_callback ( mixed $pattern , callable $callback , mixed $subject [, int $limit = -1 [, int &$count ]] )
 	'preg_replace' => array(
-		FOXWAY_DEFAULT_VALUES=>array( 3=>-1 ),
+		PHPTAGS_DEFAULT_VALUES=>array( 3=>-1 ),
 		4=>function($args) use (&$foxway_check_preg_replace_pattern) { return preg_replace($foxway_check_preg_replace_pattern($args[0]), $args[1], $args[2], $args[3]); },
 		5=>function($args) use (&$foxway_check_preg_replace_pattern) { return preg_replace($foxway_check_preg_replace_pattern($args[0]), $args[1], $args[2], $args[3], $args[4]); },
 	),
 	'preg_split' => array(
-		FOXWAY_DEFAULT_VALUES=>array( 2=>-1, 3=>0 ),
+		PHPTAGS_DEFAULT_VALUES=>array( 2=>-1, 3=>0 ),
 		4=>function($args) { return preg_split($args[0], $args[1], $args[2], $args[3]); },
 	),
 );

@@ -1,6 +1,5 @@
 <?php
-namespace Foxway;
-
+namespace PhpTags;
 include_once __DIR__ . '/../Runtime.php';
 
 class RuntimeTest extends \PHPUnit_Framework_TestCase {
@@ -87,26 +86,26 @@ output as well";'),
 	public function testRun_echo_negative_1() {
 		$this->assertEquals(
 				Runtime::runSource('echo -7;'),
-				array(-7)
+				array('-7')
 				);
 	}
 	public function testRun_echo_negative_2() {
 		$this->assertEquals(
 				Runtime::runSource('echo (int)-7;'),
-				array(-7)
+				array('-7')
 				);
 	}
 	public function testRun_echo_negative_3() {
 		$this->assertEquals(
 				Runtime::runSource('echo (int)-(int)7;'),
-				array(-7)
+				array('-7')
 				);
 	}
 
 	public function testRun_echo_variables_0() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=111; echo $foo;'),
-				array(111)
+				array('111')
 				);
 	}
 	public function testRun_echo_variables_1() {
@@ -181,25 +180,25 @@ echo "foo is $foo"; // foo is foobar'),
 	public function testRun_echo_variables_12() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=-7; echo -$foo;'),
-				array(7)
+				array('7')
 				);
 	}
 	public function testRun_echo_variables_13() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=(int)-7; echo -$foo;'),
-				array(7)
+				array('7')
 				);
 	}
 	public function testRun_echo_variables_14() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=-7; echo (int)-(int)$foo;'),
-				array(7)
+				array('7')
 				);
 	}
 	public function testRun_echo_variables_15() {
 		$this->assertEquals(
 				Runtime::runSource('echo -$foo=7, $foo;'),
-				array(-7, 7)
+				array('-7', '7')
 				);
 	}
 
@@ -231,7 +230,7 @@ echo "foo is $foo"; // foo is foobar'),
 	public function testRun_echo_digit_1() {
 		$this->assertEquals(
 				Runtime::runSource('echo 5;'),
-				array(5)
+				array('5')
 				);
 	}
 
@@ -313,43 +312,43 @@ echo "\$foo * \$bar = $foo * $bar = ", $foo * $bar, "\n\n";'),
 	public function testRun_echo_math_variables_2() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=1; echo $foo + $foo = 40 + $foo;'), // $foo = 40 + 1; echo 41 + 41
-				array(82)
+				array('82')
 				);
 	}
 	public function testRun_echo_math_variables_3() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=1; echo $foo + $foo = 40 + $foo, $foo;'), // $foo = 40 + 1; echo 41 + 41, 41
-				array(82, 41)
+				array('82', '41')
 				);
 	}
 	public function testRun_echo_math_variables_4() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=1; echo $foo + $foo = 40 + $foo = 400 + $foo, $foo;'), // $foo = 400 + 1; $foo = 40 + 401; echo 441 + 441, 441
-				array(882, 441)
+				array('882', '441')
 				);
 	}
 	public function testRun_echo_math_variables_4_increment_1() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=1; echo $foo + $foo = 40 + $foo = 400 + $foo++, $foo;'), // $foo = 400 + 1; $foo = 40 + 401; echo 441 + 441, 441
-				array(882, 441)
+				array('882', '441')
 				);
 	}
 	public function testRun_echo_math_variables_4_increment_2() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=1; echo $foo++ + $foo = 40 + $foo = 400 + $foo, $foo;'), // $foo = 400 + 2; $foo = 40 + 402; echo 1 + 442, 442
-				array(443, 442)
+				array('443', '442')
 				);
 	}
 	public function testRun_echo_math_variables_short_circuit_1() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=10; echo $foo = 400 + $foo or $foo = 10000, $foo;'), // $foo = 400 + 10; echo 441 or ... , 410
-				array(true, 410)
+				array(true, '410')
 				);
 	}
 	public function testRun_echo_math_variables_short_circuit_2() {
 		$this->assertEquals(
 				Runtime::runSource('$foo=10; echo $foo = 10 - $foo or $foo = 10000, $foo;'), // $foo = 10 - 10; echo 0 or $foo=10000 , 10000
-				array(true, 10000)
+				array(true, '10000')
 				);
 	}
 	public function testRun_echo_math_variables_5() {
@@ -1576,7 +1575,7 @@ if ( $foo + $bar ) echo "\$foo + \$bar";'),
 	}
 	public function testRun_echo_array_variable_3() {
 		$this->assertEquals(
-				Runtime::runSource('$foo[$bar="BAR"]="FOO"; echo $foo[$bar], $bar;'),
+				Runtime::runSource('$foo=array(); $foo[$bar="BAR"]="FOO"; echo $foo[$bar], $bar;'),
 				array('FOO', 'BAR')
 				);
 	}
@@ -2011,7 +2010,8 @@ static $stat = 0;
 $bar++; $stat++;
 echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 'HELLO!'), 1),
 				array(
-					(string) new ExceptionFoxway( 'bar', FOXWAY_PHP_NOTICE_UNDEFINED_VARIABLE, 4, 'testTemplate' ),
+					(string) new ExceptionPhpTags( PHPTAGS_EXCEPTION_NOTICE_UNDEFINED_VARIABLE, 'bar', 4, 'testTemplate' ),
+					(string) new ExceptionPhpTags( PHPTAGS_EXCEPTION_NOTICE_UNDEFINED_OFFSET, 'test', 5, 'testTemplate' ),
 					'HELLO!', 'testTemplate', 2, 1, 1, null)
 				);
 	}
@@ -2024,7 +2024,7 @@ static $stat = 0;
 $bar++; $stat++;
 echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 'HELLO!', 'test'=>'TEST!!!'), 2),
 				array(
-					(string) new ExceptionFoxway( 'bar', FOXWAY_PHP_NOTICE_UNDEFINED_VARIABLE, 4, 'testTemplate' ),
+					(string) new ExceptionPhpTags( PHPTAGS_EXCEPTION_NOTICE_UNDEFINED_VARIABLE, 'bar', 4, 'testTemplate' ),
 					'HELLO!', 'testTemplate', 3, 1, 2, 'TEST!!!')
 				);
 	}
@@ -2037,7 +2037,8 @@ static $stat = 0;
 $bar++; $stat++;
 echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 'HELLO!'), 3),
 				array(
-					(string) new ExceptionFoxway( 'bar', FOXWAY_PHP_NOTICE_UNDEFINED_VARIABLE, 4, 'testTemplate' ),
+					(string) new ExceptionPhpTags( PHPTAGS_EXCEPTION_NOTICE_UNDEFINED_VARIABLE, 'bar', 4, 'testTemplate' ),
+					(string) new ExceptionPhpTags( PHPTAGS_EXCEPTION_NOTICE_UNDEFINED_OFFSET, 'test', 5, 'testTemplate' ),
 					'HELLO!', 'testTemplate', 2, 1, 3, null)
 				);
 	}
@@ -2373,13 +2374,12 @@ echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 
 				array('false')
 				);
 	}
-//	@todo
-//	public function testRun_echo_boolval_9() {
-//		$this->assertEquals(
-//				Runtime::runSource('echo boolval([1, 2]) ? "true" : "false";'),
-//				array('true')
-//				);
-//	}
+	public function testRun_echo_boolval_9() {
+		$this->assertEquals(
+				Runtime::runSource('echo boolval([1, 2]) ? "true" : "false";'),
+				array('true')
+				);
+	}
 //	public function testRun_echo_boolval_10() {
 //		$this->assertEquals(
 //				Runtime::runSource('echo boolval(new stdClass) ? "true" : "false";'),
@@ -2536,21 +2536,23 @@ echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 
 		$this->assertEquals(
 				Runtime::runSource('echo is_integer(false) ? "true" : "false";'),
 				array('false')
-				);
+			);
 	}
 
 	public function testRun_echo_is_null_1() {
 		$this->assertEquals(
 				Runtime::runSource('echo is_null($inexistent) ? "true" : "false";'),
-				array( //(string) new ExceptionFoxway( 'inexistent', FOXWAY_PHP_NOTICE_UNDEFINED_VARIABLE, 1 ), @todo
-					'true')
-				);
+				array(
+					(string) new ExceptionPhpTags( PHPTAGS_EXCEPTION_NOTICE_UNDEFINED_VARIABLE, 'inexistent', 1 ),
+					'true'
+				)
+			);
 	}
 	public function testRun_echo_is_null_2() {
 		$this->assertEquals(
 				Runtime::runSource('$foo = NULL; echo is_null($foo) ? "true" : "false";'),
 				array('true')
-				);
+			);
 	}
 	public function testRun_echo_is_null_3() {
 		$this->assertEquals(
@@ -2704,7 +2706,7 @@ echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 
 	public function testRun_print_r_1() {
 		$return = Runtime::runSource('$a = array ("a" => "apple", "b" => "banana", "c" => array ("x", "y", "z")); print_r ($a);');
 		$this->assertInstanceOf(
-				'Foxway\\outPrint',
+				'PhpTags\\outPrint',
 				$return[0]
 				);
 		$this->assertEquals('<pre>Array
@@ -2768,7 +2770,7 @@ echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 
 	public function testRun_var_dump_1() {
 		$return = Runtime::runSource('$a = array(1, 2, array("a", "b", "c")); var_dump($a);');
 		$this->assertInstanceOf(
-				'Foxway\\outPrint',
+				'PhpTags\\outPrint',
 				$return[0]
 				);
 		$this->assertRegExp('/<pre>array\(3\) {
@@ -2794,7 +2796,7 @@ echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 
 	public function testRun_var_dump_2() {
 		$return = Runtime::runSource('$b = 3.1; $c = true; var_dump($b, $c);');
 		$this->assertInstanceOf(
-				'Foxway\\outPrint',
+				'PhpTags\\outPrint',
 				$return[0]
 				);
 		$this->assertRegExp(
@@ -2806,7 +2808,7 @@ echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 
 	public function testRun_var_export_1() {
 		$return = Runtime::runSource('$a = array (1, 2, array ("a", "b", "c")); var_export($a);');
 		$this->assertInstanceOf(
-				'Foxway\\outPrint',
+				'PhpTags\\outPrint',
 				$return[0]
 				);
 		$this->assertEquals("<pre>array (
@@ -2882,8 +2884,10 @@ echo $foo, $argv[0], $argc, $bar, $stat, $argv["test"];', array('testTemplate', 
 	public function testRun_RString_similar_text() {
 		$this->assertEquals(
 				Runtime::runSource('$var_1 = "PHP IS GREAT"; $var_2 = "WITH MYSQL"; similar_text($var_1, $var_2, $percent); echo $percent;'),
-				array('27.272727272727')
-				);
+				array(
+					(string) new ExceptionPhpTags( PHPTAGS_EXCEPTION_NOTICE_UNDEFINED_VARIABLE, 'percent', 1 ), // @todo
+					'27.272727272727')
+			);
 	}
 
 	public function testRun_pcre_preg_replace_1() {
@@ -3206,7 +3210,7 @@ echo isset($expected_array_got_string[0]) ? "true" : "false";'),
 
 	public function testRun_foreach_1() {
 		$this->assertEquals(
-				Runtime::runSource('$arr = array("one", "two", "three"); foreach ($arr as $value) echo "* Value: $value\n";'),
+				Runtime::runSource('$arr = ["one", "two", "three"]; foreach ($arr as $value) echo "* Value: $value\n";'),
 				array("* Value: one\n", "* Value: two\n", "* Value: three\n")
 				);
 	}
@@ -3248,7 +3252,7 @@ echo isset($expected_array_got_string[0]) ? "true" : "false";'),
 	}
 	public function testRun_foreach_8() {
 		$this->assertEquals(
-				Runtime::runSource('$a = array("one" => 1,"two" => 2,"three" => 3,"seventeen" => 17); foreach ($a as $k => $v) {echo "\$a[$k] => $v.";}'),
+				Runtime::runSource('$a = ["one" => 1,"two" => 2,"three" => 3,"seventeen" => 17]; foreach ($a as $k => $v) {echo "\$a[$k] => $v.";}'),
 				array('$a[one] => 1.', '$a[two] => 2.', '$a[three] => 3.', '$a[seventeen] => 17.')
 				);
 	}

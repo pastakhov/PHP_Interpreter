@@ -1,5 +1,5 @@
 <?php
-namespace Foxway;
+namespace PhpTags;
 
 class RuntimeFunctionsDatetime extends \PHPUnit_Framework_TestCase {
 
